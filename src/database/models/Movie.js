@@ -45,6 +45,7 @@ module.exports = (sequelize, dataTypes) => {
     });
     //Una movie tiene muchos actors
     Movie.belongsToMany(models.Actor, {
+      onDelete: "CASCADE",
       as: "actores",
       through: "actor_movie",
       foreignKey: "movie_id",

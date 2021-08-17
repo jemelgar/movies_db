@@ -34,6 +34,7 @@ module.exports = (sequelize, dataTypes) => {
   //Un actor pertenece a muchas peliculas
   Actor.associate = function (models) {
     Actor.belongsToMany(models.Movie, {
+      onDelete: "CASCADE",
       as: "peliculas",
       through: "actor_movie",
       foreignKey: "actor_id",

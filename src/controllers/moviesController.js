@@ -2,6 +2,7 @@ const path = require("path");
 const db = require("../database/models");
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const Actor = require("../database/models/Actor");
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
 // const {Movies,Genres,Actor} = require('../database/models');
@@ -10,6 +11,7 @@ const { Op } = require("sequelize");
 const Movies = db.Movie;
 const Genres = db.Genre;
 const Actors = db.Actor;
+const actor_movie = db.actor_movie;
 
 const moviesController = {
   list: (req, res) => {
@@ -68,9 +70,54 @@ const moviesController = {
       res.render("moviesEdit", { Movie, allGenres });
     });
   },
-  update: function (req, res) {},
+  update: function (req, res) {
+    Movies.update(
+      {
+        title: req.body.title,
+        rating: req.body.rating,
+        awards: req.body.awards,
+        release_date: req.body.release_date,
+        length: req.body.length,
+        genre_id: req.body.genre_id,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    ).then((newMovie) => {
+      res.redirect("/movies/detail/" + req.params.id);
+    });
+  },
   delete: function (req, res) {},
-  destroy: function (req, res) {},
+
+  destroy: function (req, res) {
+    let borraAC = actor_movie.destroy({
+      where: {
+        movie_id: req.params.id,
+      },
+    });
+
+    let ActualizaAc = Actors.update(
+      {
+        favorite_movie_id: null,
+      },
+      {
+        where: {
+          favorite_movie_id: { [db.Sequelize.Op.eq]: req.params.id },
+        },
+      }
+    );
+    Promise.all([borraAC, ActualizaAc]).then(function () {
+      Movies.destroy({
+        where: {
+          id: req.params.id,
+        },
+      }).then(() => {
+        res.redirect("/movies");
+      });
+    });
+  },
 };
 
 module.exports = moviesController;
