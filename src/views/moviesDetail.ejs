@@ -20,7 +20,7 @@
     <section>
       <a class="botonAgregar" href="/movies/add">Agregar una Pelicula</a>
       <a class="botonModificar" href="/movies/edit/<%= movie.id %> ">Modificar una Pelicula</a>
-      <form class='formBorrar' action="/movies/delete/<%=movie.id%>" method="POST">
+      <form class='formBorrar' action="/movies/delete/<%=movie.id%>" method="GET">
                 <button class="botonBorrar" type="submit">Borrar</button>
       </form>
       <a  class="botonVolver" href="/movies">Listado de Películas</a></p>

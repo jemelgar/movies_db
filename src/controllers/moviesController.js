@@ -89,7 +89,11 @@ const moviesController = {
       res.redirect("/movies/detail/" + req.params.id);
     });
   },
-  delete: function (req, res) {},
+  delete: function (req, res) {
+    db.Movie.findByPk(req.params.id).then((Movie) => {
+      res.render("moviesDelete.ejs", { Movie });
+    });
+  },
 
   destroy: function (req, res) {
     let borraAC = actor_movie.destroy({
