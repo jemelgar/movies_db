@@ -40,7 +40,7 @@ module.exports = (sequelize, dataTypes) => {
   //Una movie pertenece a un género
   Movie.associate = function (models) {
     Movie.belongsTo(models.Genre, {
-      as: "genero",
+      as: "genre",
       foreignKey: "genre_id",
     });
     //Una movie tiene muchos actors

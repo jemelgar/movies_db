@@ -61,7 +61,10 @@ const moviesController = {
     });
   },
   edit: function (req, res) {
-    let pedidoPelicula = Movies.findByPk(req.params.id);
+    // let pedidoPelicula = Movies.findByPk(req.params.id);
+    let pedidoPelicula = Movies.findByPk(req.params.id, {
+      include: { association: "genre" },
+    });
     let pedidoGeneros = Genres.findAll();
     Promise.all([pedidoPelicula, pedidoGeneros]).then(function ([
       Movie,
